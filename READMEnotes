@@ -1,0 +1,22 @@
+Database startup
+
+starts the pg database
+sudo docker run --rm --name db -e POSTGRES_PASSWORD=password -d -p 1000:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
+
+logs into the docker instance
+sudo docker exec -it db psql -U postgres
+
+creates the database movies
+CREATE DATABASE movies;
+
+Out in another terminal run sequencially
+npx knex migrate:latest
+npx knex seed:run
+
+in /server
+node index.js 
+starts up the express server
+
+in postman
+GET localshot:3000 returns all movies in the movies db
+
