@@ -14,22 +14,22 @@ server.get('/', async (req, res) =>  {
     });
 });
 server.post('/', async (req, res) => {
-    const movie_to_add = req.body
+    const { title } = req.body;
     knex('movies')
-    .insert(movie_to_add)
+    .insert({title})
     .then(res.status(200).send("Movie added"))
 });
 server.patch('/', async (req, res) => {
-    const movie_to_change = req.body
+    const { id, title } = req.body;
     knex('movies')
-    .where(movie_to_change.id)
-    .update(movie_to_change.title)
+    .where(id)
+    .update(title)
     .then(res.status(200).send("Movie changed"))
 });
 server.delete('/', async (req, res) => {
-    const movie_to_delete = req.body
+    const { title } = req.body;
     knex('movies')
-    .where(movie_to_delete)
+    .where({title : title})
     .delete()
     .then(res.status(200).send("Movie deleted"))
 })

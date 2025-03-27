@@ -19,12 +19,47 @@ function App() {
 
   const addMovie = () => {
     setAddedMovies([...addedMovies,inputValue])
+    addMovieToServer()
   };
+
+  const addMovieToServer = async () => {
+      fetch('http://localhost:3000/',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: String(inputValue).trim()
+        }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Worked with :',data)
+      })
+  };
+
+  const removeMovieFromServer = async () => {
+    fetch('http://localhost:3000/',{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: String(inputValue).trim()
+      }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Deleted :',data)
+    })
+};
+
   const handleInputChange = (userInput) => {
     setInputValue(userInput.target.value);
   };
   const removeMovie = () => {
     setAddedMovies(addedMovies.filter((movie) => movie !== inputValue));
+    removeMovieFromServer();
   }
 
   useEffect(() => {
@@ -34,21 +69,22 @@ function App() {
       return res.json();
     })
     .then((data) => {
+      console.log(data)
       setMovies(data);
     })
   }, []);
 
   return (
     <>
-    <div>Level 0:</div>
+    <div>Level 0: Hardcoded</div>
       <div class="movieListHardcode">
           {movies_hardcode.map(movie => <p>{movie.title}</p>)}
       </div>
-    <div>Level 1:</div>
+    <div>Level 1: Pulled from database</div>
       <div class="movieListServer">
         {movies.map(movie => <p>{movie.title}</p>)}
       </div>
-    <div>Level 2:</div>
+    <div>Level 2: Search through the database</div>
     <div class="movieListSearch">
         <SearchBar data={movies}/>
     </div>
@@ -62,6 +98,8 @@ function App() {
           <p>{item}</p>
         ))}
       </div>
+    <div>Level 4:</div>
+        
     </>
   )
 }
