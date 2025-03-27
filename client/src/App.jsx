@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import SearchBar from './components/SearchBar';
+import WatchwButtons from './components/WatchwButtons';
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -99,6 +100,9 @@ function App() {
         ))}
       </div>
     <div>Level 4:</div>
+    <div>
+      <WatchwButtons data={movies}/>
+    </div>
         
     </>
   )
