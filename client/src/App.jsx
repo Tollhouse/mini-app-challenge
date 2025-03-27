@@ -5,7 +5,10 @@ import './App.css'
 import SearchBar from './components/SearchBar';
 
 function App() {
-  const [movies, setMovies] = useState([])
+  const [movies, setMovies] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [addedMovies, setAddedMovies] = useState([]);
+
   const movies_hardcode = [
     {title: 'Mean Girls'},
     {title: 'Hackers'},
@@ -13,6 +16,16 @@ function App() {
     {title: 'Sunshine'},
     {title: 'Ex Machina'},
   ];
+
+  const addMovie = () => {
+    setAddedMovies([...addedMovies,inputValue])
+  };
+  const handleInputChange = (userInput) => {
+    setInputValue(userInput.target.value);
+  };
+  const removeMovie = () => {
+    setAddedMovies(addedMovies.filter((movie) => movie !== inputValue));
+  }
 
   useEffect(() => {
     fetch('http://localhost:3000/')
@@ -39,6 +52,16 @@ function App() {
     <div class="movieListSearch">
         <SearchBar data={movies}/>
     </div>
+    <div>Level 3:</div>
+      <input value={inputValue} onChange={handleInputChange} />
+      <button onClick={addMovie}>Add</button>
+      <button onClick={removeMovie}>Delete</button>
+      <div>Added Movies:</div>
+      <div>
+        {addedMovies.map((item) => (
+          <p>{item}</p>
+        ))}
+      </div>
     </>
   )
 }
